@@ -1,19 +1,14 @@
 #game-board-table {
     width:600px;
-    
 }
 #game-board-table td {
-    table-layout: fixed;
-    padding: 3rem; 
     border: 2px solid black;
 }
 #game-board-table th {
-    padding: 3rem; 
+    padding: 2rem;  
     border: 2px solid black;
 }
-#game-board {
-    margin-bottom:100px;
-}
+
 .ok {
     color:lightgreen;
     background-color:black;
