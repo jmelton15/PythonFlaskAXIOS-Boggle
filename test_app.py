@@ -22,6 +22,14 @@ class FlaskTests(TestCase):
             self.assertEqual(resp.status_code, 302)
             self.assertIn("BOGGLE</h1>",html)
             
+    def test_profile_page(self):
+       with app.test_client() as client:
+            resp = client.get('/profile')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Your Boggle Profile",html)
+            
     def test_play_game_page(self):
         with app.test_client() as client:
             resp = client.get('/play')

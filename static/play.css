@@ -16,13 +16,13 @@
 .too-close {
     color:red;  
     background-color:white;
-    font-size:50px;
+    font-size:40px;
 }
 #floatingTextarea2 {
     height: 150px;
     width: 400px;
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
     body {
         margin:0;
         padding:0;

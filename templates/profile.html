@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %} User Profile {% endblock %}
+{% block styles%} <link rel="stylesheet" href="/static/profile.css"> {% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid" id="profile-container">
+        <div class="card" id="player-card">
+            <img src="/static/Images/avatar.png" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h3 class="card-title">Your Boggle Profile</h3>
+              {% if session["plays"] %}
+                <li id="total-plays"><b><u>You've Played Boggle:</u></b> {{session["plays"]}} Times!</li>
+                {% if session["top-score"] %}
+                    <li id="top-score"><b><u>You're Best Score So Far Is:</u></b> {{session["top-score"]}}</li>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+    </div>
+{% endblock %}
+{% block scripts %} <script src="/static/profile.js"></script> {% endblock %}

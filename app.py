@@ -1,13 +1,13 @@
 from boggle import Boggle
 #from functions import not_in_dictionary, not_on_board,compare_to_board,compare_to_dictionary, calculate_score,create_board
 import functions 
-from flask import Flask, request, render_template, redirect, flash, jsonify, session, Blueprint
+from flask import Flask, request, render_template, redirect, flash, jsonify, session, Blueprint, Response
 #from flask_debugtoolbar import DebugToolbarExtension
 #from flask_session import Session
 import json
 import copy
-
-
+import mimetypes
+mimetypes.add_type('application/javascript', '.mjs')
 
 app = Flask(__name__)
 #SESSION_TYPE = 'filesystem'
@@ -28,17 +28,23 @@ def show_start_page():
        play page.
     """
     if request.method == "POST":
-        session.clear()
-        session["score"] = ''
+        functions.clear_session_variables()
         make_board = functions.create_board()
         board = copy.deepcopy(make_board)
         session["board"] = board
         return redirect("/play")
     else:
+        if session.get("plays") is None:
+            session["plays"] = 0
         return render_template("homepage.html")
 
-
-#We will move this non-route functions to the boggle.py app or some other .py app
+@app.route('/profile', methods=["GET","POST"])
+def show_user_profile():
+    """[Shows user profile stats such as times played and top score and how many times they played
+        will add more data to this as this app is built further]
+    """
+    return render_template("profile.html")
+    
 
 @app.route('/play', methods=["GET","POST"])
 def show_game_board():
@@ -51,11 +57,12 @@ def show_game_board():
     if request.method == "POST":
         session["score"] = ''
         data = request.get_json()
+        session["plays"] += 1
         session["missing-dict"] = functions.not_in_dictionary(data)
         session["missing-board"] = functions.not_on_board(data)
-        #session["in-dictionary"] = compare_to_dictionary(data)
         session["on-board"] = functions.compare_to_board(functions.compare_to_dictionary(data))
         session["score"] = functions.calculate_score(functions.compare_to_board(functions.compare_to_dictionary(data)))
+        functions.determine_top_score(session["score"])
         jsonObj = {
             "missing_dict": session.get("missing-dict"),
             "missing_board": session.get("missing-board"),

@@ -12,7 +12,7 @@ $(document).ready(function() {
     let $pMissingBoard = $("#p-missing-board");
     let $missingBoardList = $("#missing-board-list");
     let $gameBoardTable = $("#game-board-table");
-
+   
     
 /**
  * The below code is the code for the timer.
@@ -48,7 +48,7 @@ $(document).ready(function() {
         if (time == -1) {
             $gameBoardTable.hide();
             $sendWords.show();
-            localStorage.clear();
+            localStorage.removeItem("time");
             $sendWords.on("click", async function() {
                 await show_stats();
             })
@@ -57,6 +57,12 @@ $(document).ready(function() {
     }
     let intervalId = setInterval(() => {countdown()}, 1000);
 
+    /**
+     * this function checks to see if we already have stored timer in local storage yet
+     *  if we have, then we return the time that was in local storage
+     * otherwise start new timer at 60 seconds
+     * This prevents time from being lost when the page is refreshed
+     */
     function getTime() {
         if (localStorage.getItem("time") != null && typeof localStorage.getItem("time") != 'undefined') {
             let time = localStorage.getItem("time");
@@ -69,7 +75,6 @@ $(document).ready(function() {
         }
     }
     
-
 
     hideElements();
 
@@ -90,17 +95,24 @@ $(document).ready(function() {
      */
     async function postWords() {
         let words = $textArea.val().match(/\S+/g);
-        let guesses = {};
-        for(let i=0;i< words.length;i++) {
-            guesses[i] = words[i];
+        let guesses = {}; 
+        if (words == null) {
+            $scoreHeader.text("You did not type any words in time. But Hey, we will allow you to take your best guess now!")
         }
-
-        
-        let response = await axios.post('http://127.0.0.1:5000/play', {
-            guesses
-        })
-        console.log(response.data)
-        return response.data
+        else {
+            $sendWords.off();
+            for(let i=0;i< words.length;i++) {
+                guesses[i] = words[i];
+            }
+    
+            let response = await axios.post('http://127.0.0.1:5000/play', {
+                data: {
+                    guesses
+                }
+            })
+            
+            return response.data
+        }
     }
     
     /**
@@ -109,21 +121,16 @@ $(document).ready(function() {
      * of the game session
      */
     async function show_stats(){
-        $sendWords.off();
         let response = await postWords();
         showElements();
         $correctList.empty();
         $missingDictList.empty();
         $missingBoardList.empty();
-        console.log(response.score)
-        console.log(response.on_board)
-        console.log(response.missing_board)
-        console.log(response.missing_dict)
         let wordsOnBoard = response.on_board;
         let score = response.score;
-        //let wordsInDict = response.in_dictionary;
         let missingDict = response.missing_dict;
         let missingBoard = response.missing_board;
+        storeTopScore(score);
         $scoreHeader.text(`Your Score This Round Was: ${score}`);
         if (wordsOnBoard.length < 1  ) {
             $pOnBoard.hide();
@@ -163,7 +170,7 @@ $(document).ready(function() {
     }
 
 
-
+    
 
     /**
      * simple hide and show functions for all the elements 

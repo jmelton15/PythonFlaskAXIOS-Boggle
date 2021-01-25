@@ -1,0 +1,25 @@
+#profile-container {
+    width: 100%;
+    height: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:20px;
+}
+.card-title {
+    transform: translate(25%);
+    margin-bottom:20px;
+}
+#player-card{
+    width:30rem;
+}
+
+@media only screen and (max-width: 800px) {
+    #player-card {
+        width:20rem;
+    }
+    .card-title {
+        transform: translate(12%);
+        margin-bottom:20px;
+    }
+}

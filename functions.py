@@ -22,7 +22,8 @@ def compare_to_dictionary(data):
             [a list containing only words in the users guessses that were in the dictionary]
     """ 
     guessed_words = []
-    guesses = data.get("guesses")
+    dataObj = data.get("data")
+    guesses = dataObj.get("guesses")
     for i in range(len(guesses)):
         guessed_words.append(guesses.get(f"{i}"))
     guessed_words = set(guessed_words)
@@ -41,7 +42,8 @@ def not_in_dictionary(data):
         [a list containing all the words that were not in the dictionary (opposite of compare_to_dictionary)]
     """
     guessed_words = []
-    guesses = data.get("guesses")
+    dataObj = data.get("data")
+    guesses = dataObj.get("guesses")
     for i in range(len(guesses)):
         guessed_words.append(guesses.get(f"{i}"))
     guessed_words = set(guessed_words)
@@ -60,7 +62,8 @@ def not_on_board(data):
     """
     guessed_words = []
     missing = []
-    guesses = data.get("guesses")
+    dataObj = data.get("data")
+    guesses = dataObj.get("guesses")
     for i in range(len(guesses)):
         guessed_words.append(guesses.get(f"{i}"))
     for word in guessed_words:
@@ -101,6 +104,26 @@ def calculate_score(final):
     score = sum(sum_arr)
     
     return score
+
+def determine_top_score(score):
+    """[Compares the currentscore the user just got to any score store in the 
+        top-scores session. If there isn't a top score session, then top-score session
+        variable is created and set to the value of the score]
+    """
+
+    if session.get("top-score") != None:
+        if score > session["top-score"]:
+            session["top-score"] = score
+    else:
+        session["top-score"] = score
+         
+   
+def clear_session_variables():
+    session["score"] = ''
+    session["on-board"] = ''
+    session["missing-dict"] = ''
+    session["missing-board"] = ''
+
 
 # def start_timer():
 #     t = 60
