@@ -169,7 +169,13 @@ $(document).ready(function() {
             $missingDictList.append(li);
         }
     }
-
+    /**
+     * 
+     * This is a function that currently is only used to store local storage 
+     * of the local user's top-score. Above, I do send it back to the server in a post request
+     * however, at this point I do not use it for anything. Normally, instead of just using 
+     * session on the server side, we would store the user's statistics in a database of some sort
+     */
     function storeTopScore(score) {
         if (localStorage.getItem("top-score") == null) {
             localStorage.setItem("top-score",score);
