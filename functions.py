@@ -110,7 +110,6 @@ def determine_top_score(score):
         top-scores session. If there isn't a top score session, then top-score session
         variable is created and set to the value of the score]
     """
-
     if session.get("top-score") != None:
         if score > session["top-score"]:
             session["top-score"] = score

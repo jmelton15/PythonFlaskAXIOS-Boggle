@@ -53,7 +53,6 @@ def show_game_board():
           will grab the json data that is sent from the javascript axios post request and respond with a 
           python dictionary of data]
     """
-    board = session.get('board')
     if request.method == "POST":
         session["score"] = ''
         data = request.get_json()
@@ -62,6 +61,7 @@ def show_game_board():
         session["missing-board"] = functions.not_on_board(data)
         session["on-board"] = functions.compare_to_board(functions.compare_to_dictionary(data))
         session["score"] = functions.calculate_score(functions.compare_to_board(functions.compare_to_dictionary(data)))
+        #this next function determines top score
         functions.determine_top_score(session["score"])
         jsonObj = {
             "missing_dict": session.get("missing-dict"),
@@ -70,5 +70,11 @@ def show_game_board():
             "score": session.get("score")
         }
         return jsonObj
+    #The below code stops a user from jumping straight to /play page 
+    # without first getting to the landing page and creating a board
     else:
-        return render_template("play-game.html", board=board)
+        if session.get("board"):
+            board = session.get('board')
+            return render_template("play-game.html", board=board)
+        else:
+            return redirect("/")

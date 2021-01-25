@@ -107,7 +107,8 @@ $(document).ready(function() {
     
             let response = await axios.post('http://127.0.0.1:5000/play', {
                 data: {
-                    guesses
+                    guesses,
+                    "top-score": localStorage.getItem("top-score")
                 }
             })
             
@@ -169,7 +170,15 @@ $(document).ready(function() {
         }
     }
 
-
+    function storeTopScore(score) {
+        if (localStorage.getItem("top-score") == null) {
+            localStorage.setItem("top-score",score);
+        }
+        else if (localStorage.getItem("top-score") < score) {
+            localStorage.setItem("top-score") = score
+        }
+    }
+    
     
 
     /**
