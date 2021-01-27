@@ -56,6 +56,7 @@ def show_game_board():
     if request.method == "POST":
         session["score"] = ''
         data = request.get_json()
+        print(data)
         session["plays"] += 1
         session["missing-dict"] = functions.not_in_dictionary(data)
         session["missing-board"] = functions.not_on_board(data)
