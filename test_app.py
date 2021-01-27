@@ -42,7 +42,7 @@ class AppTests(TestCase):
     def test_profile_page(self):
         """[This tests getting the profile page and some of the HTML on the page]
         """
-       with app.test_client() as client:
+        with app.test_client() as client:
             resp = client.get('/profile')
             html = resp.get_data(as_text=True)
 

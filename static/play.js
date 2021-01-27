@@ -12,8 +12,7 @@ $(document).ready(function() {
     let $pMissingBoard = $("#p-missing-board");
     let $missingBoardList = $("#missing-board-list");
     let $gameBoardTable = $("#game-board-table");
-   
-    
+    let timeSpan = document.querySelector(".timer.minute .hand span");
 /**
  * The below code is the code for the timer.
  * Until the time is up the user can type words at will into the text area, but
@@ -33,19 +32,14 @@ $(document).ready(function() {
      */
     function countdown() {
         //console.log(time)
-        if (time > 10) {
-            $(".timer").removeClass("too-close");
-            $(".timer").addClass("ok");
+        if (time <= 10) {
+            $(".face p").css("color","red");
         }
-        else if (time <= 10) {
-            $(".timer").removeClass("ok");
-            $(".timer").addClass("too-close");
-        }
-        $(".timer").text(`Game Timer: ${time}`);
+        $("#lazy").text(`${time}`);
         time --;
         localStorage.setItem("time",time);
-        
         if (time == -1) {
+            timeSpan.style.border = "none";
             $gameBoardTable.hide();
             $sendWords.show();
             localStorage.removeItem("time");
@@ -57,6 +51,8 @@ $(document).ready(function() {
     }
     let intervalId = setInterval(() => {countdown()}, 1000);
 
+
+
     /**
      * this function checks to see if we already have stored timer in local storage yet
      *  if we have, then we return the time that was in local storage
@@ -66,6 +62,8 @@ $(document).ready(function() {
     function getTime() {
         if (localStorage.getItem("time") != null && typeof localStorage.getItem("time") != 'undefined') {
             let time = localStorage.getItem("time");
+            // $(".timer.minute .hand span").css("animation-duration",time)
+            timeSpan.style.animationDuration = `${time}s`
             return time;
         }
         else{
@@ -108,7 +106,7 @@ $(document).ready(function() {
             let response = await axios.post('http://127.0.0.1:5000/play', {
                 data: {
                     guesses,
-                    "top-score": localStorage.getItem("top-score")
+                    "top-score": localStorage.getItem("top-score"),
                 }
             })
             
@@ -181,7 +179,7 @@ $(document).ready(function() {
             localStorage.setItem("top-score",score);
         }
         else if (localStorage.getItem("top-score") < score) {
-            localStorage.setItem("top-score") = score
+            localStorage.setItem("top-score",score);
         }
     }
     

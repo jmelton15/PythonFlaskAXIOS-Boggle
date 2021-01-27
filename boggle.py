@@ -143,3 +143,9 @@ class Boggle():
         # Sad panda.
 
         return False
+    
+    # def give_hint(self,board,word):
+    #     for y in range(0, 5):
+    #         for x in range(0, 5):
+    #             if self.find_from(board, word, y, x, seen=set()):
+    #                 return True

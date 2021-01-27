@@ -7,7 +7,15 @@
 {% if board != [] %}
     <div class="container d-flex justify-content-center align-items-center flex-column" id="timer-header">
       <h1 class="display-1">BOGGLE</h1>
-      <u><h3 class="timer"></h3></u>
+      <div class="timer-group d-flex justify-content-center align-items-center">
+        <div class="timer minute">
+          <div class="hand"><span></span></div>
+          <div class="hand"><span></span></div>
+        </div>
+        <div class="face">
+          <p id="lazy"></p>  
+        </div>
+      </div>
       <table class="table" id="game-board-table">
         {% for y in range(5) %}
             <tr>

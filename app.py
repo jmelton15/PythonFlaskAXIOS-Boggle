@@ -65,6 +65,7 @@ def show_game_board():
         #this next function determines top score
         functions.determine_top_score(session["score"])
         jsonObj = {
+            "game_board": session.get("board"),
             "missing_dict": session.get("missing-dict"),
             "missing_board": session.get("missing-board"),
             "on_board": session.get("on-board"),
